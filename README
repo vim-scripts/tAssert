@@ -1,0 +1,39 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=1730
+
+This plugin defines a command |:TAssert| that takes an expression as 
+argument and throws an exception if this expression evaluates to 
+|empty()|. You can insert these comments throughout your code whenever 
+something could potentially go wrong. The exception is then thrown right 
+where the problem occurs. You could think of it as a poor man's 
+design-by-contract substitute.
+
+One goal of this plugin is to allow users to quickly switch on or off 
+assertions depending on the context. This can be done either by:
+
+    1. Turning assertions off so that they are not evaluated. This can 
+       be achieved by setting g:TASSERT to 0 or by calling the command 
+       |:TAssertOff|.
+
+    2. Commenting out assertions in the current buffer by calling the 
+       commmand |:TAssertComment|.
+
+
+Example:
+
+    fun! Test(a, b)
+        TAssertType a:a, 'string'
+        TAssertType a:b, 'number'
+        TAssert !empty(a:a)
+        return repeat(a:a, a:b)
+    endf
+
+
+Logging:
+
+TAssert also includes a few convenience commands for logging. The 
+variable g:TLOG controls where messages are written to:
+
+    echom ... Print messages in the echo area.
+    file  ... Print messages to a file; syntax "file:FILENAME"
+    Decho ... Print messages via Decho (vimscript#642)
+
