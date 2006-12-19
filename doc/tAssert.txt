@@ -25,16 +25,21 @@ convenience commands listed below.
 
 Assert Commands:
                                                     *:TAssert*
-    TAssert {expr} ... Test that an expression doesn't evaluate to 
+    TAssert[!] {expr} ... Test that an expression doesn't evaluate to 
     something |empty()|. If used after a |:TAssertBegin| command, any 
-    occurrences of "<SID>" in the expression is replaced with the current 
-    script's |<SNR>|.
+    occurrences of "<SID>" in the expression is replaced with the 
+    current script's |<SNR>|. With [!] failures are logged according to 
+    the setting of |g:tAssertLog|.
 
 
 Convenience Commands:
                             *:TAssertOn* *:TAssertOff* *:TAssertToggle*
-    TAssertOn, TAssertOff, TAssertToggle ... Switch assertions on or 
-    off and reload the plugin.
+    TAssertOn, TAssertOff, TAssertToggle ... Switch assertions on or off 
+    and reload the plugin.
+
+                                                    *:TAssertSource*
+    TAssertSource [{file}] ... Source file (or current buffer if none 
+    provided, while temporarily setting |g:TASSERT| to 1.
 
                                 *:TAssertComment* *:TAssertUncomment*
     TAssertComment, TAssertUncomment ... (Un-)Comment TAssert* commands 
@@ -51,9 +56,9 @@ Convenience Commands:
     can be useful in unit testing kind of scripts.
 
                                                     *:TAssertEnd*
-    TAssertEnd [{variable1} ...] ... Marks the end of a sequence of 
-    assertions. |:unlet|s the temporary variables named on the command 
-    line.
+    TAssertEnd [{variable1} {function1()}...] ... Mark the end of a 
+    sequence of assertions. Call |:unlet| for temporary variables or 
+    |:delfunction| for temporary functions named on the command line.
 
 
 Convenience Function:
@@ -62,8 +67,26 @@ Convenience Function:
     IsFuncref(arg)
     IsList(arg)
     IsDictionary(arg)
-    DoRaise(expr)
- 
+    IsEqual(arg1, arg2)
+    IsNotEqual(arg1, arg2)
+    IsMatch(arg1, arg2)
+    IsException(expr)
+    IsError(expr, rx)
+
+
+                                                    *tAssert-logging*
+Logging:
+Logging is done by 00tLog.vim.
+                                                    *g:tlog*
+The variable g:tlog can have the following values:
+
+    echom ... Print messages in the echo area.
+    file  ... Print messages in g:tAssertLogFile
+    Decho ... Print messages via Decho (vimscript#642)
+
+This affects the commands TAssertBegin! and TAssert! with the |<bang>|.
+
+
                                                     *tAssert-examples*
 Examples: >
     TAssertBegin "General"

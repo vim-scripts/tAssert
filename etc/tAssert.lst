@@ -1,4 +1,5 @@
 ./doc/tAssert.txt
 ./etc/tAssert.lst
 ./plugin/00tAssert.vim
+./plugin/00tLog.vim
 ./test/tAssert.vim
